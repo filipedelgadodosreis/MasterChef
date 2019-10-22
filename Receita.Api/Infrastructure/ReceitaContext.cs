@@ -8,6 +8,9 @@ namespace Receita.Api.Infrastructure
     {
         public ReceitaContext(DbContextOptions<ReceitaContext> options) : base(options) { }
 
+        public DbSet<Model.Receita> Receitas { get; set; }
+        public DbSet<Model.Categoria> Categorias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ReceitaEntityTypeConfiguration());
