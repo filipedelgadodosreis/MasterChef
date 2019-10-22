@@ -1,17 +1,12 @@
-﻿namespace WebMVC.Models
+﻿using System.Collections.Generic;
+
+namespace WebMVC.Models
 {
     public class ReceitaViewModel
     {
-        public int Id { get; set; }
-
-        public int IdCategoria { get; set; }
-
-        public string Titulo { get; set; }
-
-        public string Descricao { get; set; }
-
-        public string Ingredientes { get; set; }
-
-        public string ModoPreparo { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int Count { get; set; }
+        public List<Receita> Data { get; set; }
     }
 }

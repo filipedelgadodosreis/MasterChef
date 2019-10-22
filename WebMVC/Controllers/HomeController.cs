@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebMVC.Models;
+using WebMVC.Services;
 
 namespace WebMVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IReceitaService _receitaSvc;
+
+        public HomeController(IReceitaService receitaSvc) => _receitaSvc = receitaSvc;
+
         public IActionResult Index()
         {
             return View();
@@ -24,8 +29,8 @@ namespace WebMVC.Controllers
 
         public JsonResult LatestCookie()
         {
-            var posts = "";
-            return Json(posts);
+            var cookies = _receitaSvc.GetLatestCookies();
+            return Json(cookies);
         }
     }
 }

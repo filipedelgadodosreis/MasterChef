@@ -27,7 +27,8 @@ namespace Receita.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMVC(Configuration)
-                .AddCustomDbContext(Configuration);
+                .AddCustomDbContext(Configuration)
+                .AddSwagger();
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -49,6 +50,13 @@ namespace Receita.Api
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Crud Receitas");
+            });
         }
     }
 
@@ -86,6 +94,23 @@ namespace Receita.Api
             });
 
             return services;
+        }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "Master Chef - Receitas HTTP API",
+                    Version = "v1",
+                    Description = "API para gerenciamento de Receitas e Categorias"
+                });
+            });
+
+            return services;
+
         }
     }
 }
