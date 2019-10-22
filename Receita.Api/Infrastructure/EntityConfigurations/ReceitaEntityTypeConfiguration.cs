@@ -7,7 +7,7 @@ namespace Receita.Api.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Model.Receita> builder)
         {
-            builder.ToTable("Receita");
+            builder.ToTable("Receitas");
 
             builder.HasKey(ci => ci.Id);
 

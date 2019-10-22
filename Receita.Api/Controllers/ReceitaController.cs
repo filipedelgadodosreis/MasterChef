@@ -27,11 +27,11 @@ namespace Receita.Api.Controllers
         [ProducesResponseType(typeof(PaginatedItemsViewModel<Model.Receita>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<Model.Receita>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> ItemsAsyncEquipments([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0, string ids = null)
+        public async Task<IActionResult> ItemsAsyncReceitas([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0, string ids = null)
         {
             if (!string.IsNullOrEmpty(ids))
             {
-                var items = await GetItemsByIdsAsyncEquipments(ids);
+                List<Model.Receita> items = await GetItemsByIdsAsyncReceitas(ids);
 
                 if (!items.Any())
                 {
@@ -41,7 +41,7 @@ namespace Receita.Api.Controllers
                 return Ok(items);
             }
 
-            var totalItems = await _receitaContext.Receitas
+            long totalItems = await _receitaContext.Receitas
                 .LongCountAsync();
 
             var itemsOnPage = await _receitaContext.Receitas
@@ -51,24 +51,24 @@ namespace Receita.Api.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var model = new PaginatedItemsViewModel<Model.Receita>(pageIndex, pageSize, totalItems, itemsOnPage);
+            PaginatedItemsViewModel<Model.Receita> model = new PaginatedItemsViewModel<Model.Receita>(pageIndex, pageSize, totalItems, itemsOnPage);
 
             return Ok(model);
         }
 
-        private async Task<List<Model.Receita>> GetItemsByIdsAsyncEquipments(string ids)
+        private async Task<List<Model.Receita>> GetItemsByIdsAsyncReceitas(string ids)
         {
-            var numIds = ids.Split(',').Select(id => (Ok: int.TryParse(id, out int x), Value: x));
+            IEnumerable<(bool Ok, int Value)> numIds = ids.Split(',').Select(id => (Ok: int.TryParse(id, out int x), Value: x));
 
             if (!numIds.All(nid => nid.Ok))
             {
                 return new List<Model.Receita>();
             }
 
-            var idsToSelect = numIds
+            IEnumerable<int> idsToSelect = numIds
                 .Select(id => id.Value);
 
-            var items = await _receitaContext.Receitas.Where(ci => idsToSelect.Contains(ci.Id)).ToListAsync();
+            List<Model.Receita> items = await _receitaContext.Receitas.Where(ci => idsToSelect.Contains(ci.Id)).ToListAsync();
 
             return items;
         }
