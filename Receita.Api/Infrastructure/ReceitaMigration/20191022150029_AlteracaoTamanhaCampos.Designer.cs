@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Receita.Api.Infrastructure;
 
 namespace Receita.Api.Infrastructure.ReceitaMigration
 {
     [DbContext(typeof(ReceitaContext))]
-    partial class ReceitaContextModelSnapshot : ModelSnapshot
+    [Migration("20191022150029_AlteracaoTamanhaCampos")]
+    partial class AlteracaoTamanhaCampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
