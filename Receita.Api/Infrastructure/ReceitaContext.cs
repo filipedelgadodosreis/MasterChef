@@ -11,6 +11,7 @@ namespace Receita.Api.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ReceitaEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoriaEntityTypeConfiguration());
         }
 
     }

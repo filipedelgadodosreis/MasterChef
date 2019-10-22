@@ -13,8 +13,8 @@ namespace Receita.Api.Infrastructure.ReceitaMigration
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Titulo = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true)
+                    Titulo = table.Column<string>(maxLength: 50, nullable: false),
+                    Descricao = table.Column<string>(maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,27 +28,26 @@ namespace Receita.Api.Infrastructure.ReceitaMigration
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IdCategoria = table.Column<int>(nullable: false),
-                    Titulo = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
-                    Ingredientes = table.Column<string>(nullable: true),
-                    ModoPreparo = table.Column<string>(nullable: true),
-                    CategoriaId = table.Column<int>(nullable: true)
+                    Titulo = table.Column<string>(maxLength: 150, nullable: false),
+                    Descricao = table.Column<string>(maxLength: 150, nullable: false),
+                    Ingredientes = table.Column<string>(maxLength: 150, nullable: false),
+                    ModoPreparo = table.Column<string>(maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Receita", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Receita_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
+                        name: "FK_Receita_Categoria_IdCategoria",
+                        column: x => x.IdCategoria,
                         principalTable: "Categoria",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Receita_CategoriaId",
+                name: "IX_Receita_IdCategoria",
                 table: "Receita",
-                column: "CategoriaId");
+                column: "IdCategoria");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
